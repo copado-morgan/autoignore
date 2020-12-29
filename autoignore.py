@@ -19,8 +19,14 @@ nameSpaces = open(args.input)
 nameSpacesVar = nameSpaces.readlines()
 nameSpaces.close()
 
+# takes default.gitignore, assigns to var
+defaultIgnore = open('./resources/default.gitignore')
+defaultIgnoreVar = defaultIgnore.read()
+defaultIgnore.close()
+
 # parses input file as list, strips whitespace and newlines
 with open(outputFileName, "w") as outputFile:  # export newFileLines to text file
+    outputFile.write(defaultIgnoreVar + '\r')
     for nameVal in nameSpacesVar:
         nameVal.strip()
         nameVal = nameVal.replace('\n', '')
