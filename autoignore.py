@@ -1,21 +1,33 @@
 # Script to parse newline-separated managed package lists from text files.
 # works best with a 1 column csv file of namespaces. Will trim whitespace in the future, but watch for it now.
-#Syntax:
-#python3 autoignore.py filename.csv
-import sys
-nameSpaces = open(sys.argv[1])
-#need to catch no file specified exception, provide directions.
+# Syntax:
+# python3 autoignore.py -i filename.csv -o outputPrefix
+import argparse
+
+# command line switches
+parser = argparse.ArgumentParser()
+parser.add_argument("-i", "--input", required=True)
+parser.add_argument("-o", "--output", required=False)
+args = parser.parse_args()
+if args.output:
+    outputFileName = args.output + ".gitignore"
+else:
+    outputFileName = "generated.gitignore"
+
+# takes input file, assigns to str var
+nameSpaces = open(args.input)
 nameSpacesVar = nameSpaces.readlines()
 nameSpaces.close()
-#need to strip white space. Readlines brings in as a list, the strip method is for strings
-with open("generated.gitignore", "w") as outputFile: #export newFileLines to text file
+
+# parses input file as list, strips whitespace and newlines
+with open(outputFileName, "w") as outputFile:  # export newFileLines to text file
     for nameVal in nameSpacesVar:
+        nameVal.strip()
         nameVal = nameVal.replace('\n', '')
         nameVal = nameVal.replace('\r', '')
 
-        if(nameVal):
+        if nameVal:
             outputFile.write('classes/' + nameVal + '__*' + '\r')
             outputFile.write('triggers/' + nameVal + '__*' + '\r')
-            outputFile.write('pages/' + nameVal + '__*' +'\r\r')
-    print ("\"generated.gitignore\" file created")
-#should probably add option to specify output filename. Could also use an option to choose overwriting existing file.
+            outputFile.write('pages/' + nameVal + '__*' + '\r\r')
+    print(outputFileName + " file created")
