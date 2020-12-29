@@ -1,5 +1,5 @@
 # Script to parse newline-separated managed package lists from text files.
-# works best with a 1 column csv file of namespaces. Will trim whitespace in the future, but watch for it now.
+# works best with a 1 column csv file of namespaces.
 # Syntax:
 # python3 autoignore.py -i filename.csv -o outputPrefix
 import argparse
